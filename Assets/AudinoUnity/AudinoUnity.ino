@@ -63,7 +63,7 @@ void loop() {
   Serial.print(',');
   Serial.print(potValues[2]);
   Serial.print(',');
-  Serial.print(potValues[3]);
+  Serial.println(potValues[3]);
 
   // Here we delay the loop by the delayTime value specified.
   delay(delayTime);
