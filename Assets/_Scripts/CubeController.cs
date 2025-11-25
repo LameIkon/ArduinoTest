@@ -31,8 +31,8 @@ public class CubeController : MonoBehaviour
             tokensInts[i] = int.Parse(tokens[i]);
         }
         Debug.Log(Map(tokensInts[1]));
-        _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3]));
-        _cubeRenderer.material.color = _color;
+        _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3])); // takes the inputs from Serial and maps it to a float between 0 and 1, then makes it into a Color type.
+        _cubeRenderer.material.color = _color; // Sets the color of the material to the new color.
     }
 
     private void OnApplicationQuit()
