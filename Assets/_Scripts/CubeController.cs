@@ -32,7 +32,7 @@ public class CubeController : MonoBehaviour
         }
         Debug.Log(Map(tokensInts[1]));
         _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3]));
-        _cubeRenderer.material.SetColor("_baseColor", _color);
+        _cubeRenderer.material.color = _color;
     }
 
     private void OnApplicationQuit()
