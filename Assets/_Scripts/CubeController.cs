@@ -16,6 +16,7 @@ public class CubeController : MonoBehaviour
         _serial.Open(); // Opens the serial moniter on the Arduino.
         _serial.ReadTimeout = 100; // Do not know what this is.
         _cubeRenderer = GetComponent<Renderer>();
+        _color = _cubeRenderer.material.color;
     }
 
 
@@ -30,8 +31,10 @@ public class CubeController : MonoBehaviour
             tokensInts[i] = int.Parse(tokens[i]);
         }
         Debug.Log(Map(tokensInts[1]));
-        _color = new Vector4 (Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3]));
-        _cubeRenderer.material.SetColor("_BaseColor", _color);
+        _color.r = tokensInts[0];
+        _color.g = tokensInts[1];
+        _color.b = tokensInts[2];
+        _color.a = tokensInts[3];
     }
 
     private void OnApplicationQuit()
