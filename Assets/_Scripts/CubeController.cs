@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.IO.Ports;
+using System.IO.Ports; // This makes it possible to interface with the ports.
 
 public class CubeController : MonoBehaviour
 {
@@ -15,7 +15,6 @@ public class CubeController : MonoBehaviour
         _serial.DtrEnable = true; // This needs to be here because else it will not work.
         _serial.Open(); // Opens the serial moniter on the Arduino.
         _serial.ReadTimeout = 100; // Do not know what this is.
-        
         _cubeRenderer = GetComponent<Renderer>();
     }
 
@@ -32,8 +31,6 @@ public class CubeController : MonoBehaviour
         }
         Debug.Log(Map(tokensInts[1]));
         _color = new Vector4 (Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3]));
-        //_color = new Vector4(0.3f, 0.2f, 0.8f ,1f );
-        //Debug.Log(_data); 
         _cubeRenderer.material.SetColor("_BaseColor", _color);
     }
 
@@ -53,11 +50,15 @@ public class CubeController : MonoBehaviour
     {        
         return (float)(value - lowIn) / (highIn - lowIn);
     }
-
-    // Helper function for the Map
+    
+    /// <summary>
+    /// Maps an integer value between <c>0</c> and <c>1023</c> to a float between <c>0</c> and <c>1</c>.
+    /// </summary>
+    /// <param name="value">The value to be mapped.</param>
+    /// <returns>A float between <c>0</c> and <c>1</c></returns>
     private float Map(int value) 
     {
-        return MapZeroToOne(value, 0, 255);
+        return MapZeroToOne(value, 0, 1023);
     }
 
 }

@@ -6,25 +6,25 @@ OUTPUT for the LEDs to represent the changes made to the digital model within Un
 // Constants created for ports.
 
 // A# = analog ports for potentiometer.
-const int pot1Pin = A0;
-const int pot2Pin = A1;
-const int pot3Pin = A2;
-const int pot4Pin = A3;
+const pin_size_t pot1Pin = A0;
+const pin_size_t pot2Pin = A1;
+const pin_size_t pot3Pin = A2;
+const pin_size_t pot4Pin = A3;
 
 // ~# PWM ports for LEDs.
-const int led1Pin = 11;
-const int led2Pin = 10;
-const int led3Pin = 9;
-const int led4Pin = 6;
+const pin_size_t led1Pin = 11;
+const pin_size_t led2Pin = 10;
+const pin_size_t led3Pin = 9;
+const pin_size_t led4Pin = 6;
 
 // Button port.
-const int button = 13;
+const pin_size_t button = 13;
 
 // Delaytime for how big the interval between each print should be.
-const int delayTime = 100;
+const uint8_t delayTime = 100;
 
-int potValues[4];
-int ledValues[4];
+uint16_t potValues[4];
+uint16_t ledValues[4];
 
 void setupInput(pin_size_t pin);
 void setupOutput(pin_size_t pin);
@@ -51,10 +51,10 @@ void loop() {
   // put your main code here, to run repeatedly: <-- I didn't write this
 
   // Value of the potentiometers are read.
-  potValues[0] = mapValue(analogRead(pot1Pin));
-  potValues[1] = mapValue(analogRead(pot2Pin));
-  potValues[2] = mapValue(analogRead(pot3Pin));
-  potValues[3] = mapValue(analogRead(pot4Pin));
+  potValues[0] = analogRead(pot1Pin);
+  potValues[1] = analogRead(pot2Pin);
+  potValues[2] = analogRead(pot3Pin);
+  potValues[3] = analogRead(pot4Pin);
 
   // Read potentiometer values are printed.
   Serial.print(potValues[0]);
@@ -69,10 +69,10 @@ void loop() {
   delay(delayTime);
 
   // LEDs use potentiometer value for brightness.
-  analogWrite(led1Pin, potValues[0]);
-  analogWrite(led2Pin, potValues[1]);
-  analogWrite(led3Pin, potValues[2]);
-  analogWrite(led4Pin, potValues[3]);
+  analogWrite(led1Pin, mapValue(potValues[0]));
+  analogWrite(led2Pin, mapValue(potValues[1]));
+  analogWrite(led3Pin, mapValue(potValues[2]));
+  analogWrite(led4Pin, mapValue(potValues[3]));
   
 }
 
