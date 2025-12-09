@@ -22,6 +22,7 @@ const pin_size_t button = 13;
 
 // Delaytime for how big the interval between each print should be.
 const uint8_t delayTime = 100;
+bool hasButtonBeenPressed = false;
 
 uint16_t potValues[4];
 uint16_t ledValues[4];
@@ -29,6 +30,7 @@ uint16_t ledValues[4];
 void setupInput(pin_size_t pin);
 void setupOutput(pin_size_t pin);
 int mapValue(int value);
+bool buttonPress(PinStatus status);
 
 void setup() {
   // put your setup code here, to run once.
@@ -40,6 +42,7 @@ void setup() {
   setupInput(pot2Pin);
   setupInput(pot3Pin);
   setupInput(pot4Pin);
+  setupInput(button);
 
   setupOutput(led1Pin);
   setupOutput(led2Pin);
@@ -56,14 +59,16 @@ void loop() {
   potValues[2] = analogRead(pot3Pin);
   potValues[3] = analogRead(pot4Pin);
 
-  // Read potentiometer values are printed.
+  // Read potentiometer values are printed and how it is sendt to Unity.
   Serial.print(potValues[0]);
   Serial.print(',');
   Serial.print(potValues[1]);
   Serial.print(',');
   Serial.print(potValues[2]);
   Serial.print(',');
-  Serial.println(potValues[3]);
+  Serial.print(potValues[3]);
+  Serial.print(',');
+  Serial.println(buttonPress(digitalRead(button)));
 
   // Here we delay the loop by the delayTime value specified.
   delay(delayTime);
@@ -73,7 +78,6 @@ void loop() {
   analogWrite(led2Pin, mapValue(potValues[1]));
   analogWrite(led3Pin, mapValue(potValues[2]));
   analogWrite(led4Pin, mapValue(potValues[3]));
-  
 }
 
 
@@ -93,5 +97,11 @@ void setupOutput(pin_size_t pin)
 // Each LED will represent one colour from the RGBA colour values.
 int mapValue(int value)
 {
-  return map(value, 0, 1023, 255, 0);
+  return map(value, 0, 1023, 0, 255);
+}
+
+bool buttonPress(PinStatus status)
+{
+  if(status == LOW) return true;
+  return false; 
 }

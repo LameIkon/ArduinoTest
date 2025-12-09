@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.IO.Ports; // This makes it possible to interface with the ports.
 
@@ -23,16 +24,23 @@ public class CubeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _data = _serial.ReadLine(); // Reads the line, this does not need to be in an update, but right now I do not know how to make it an event.
-        string[] tokens = _data.Split(','); // Splits the data into tokens.
-        int[] tokensInts = new int[tokens.Length]; // Creates an array of ints with the length of the tokens. This can be done better and with less memory, because we know the data coming in.
-        for (int i = 0; i < tokens.Length; i++) // Fills the ints array with the strings from tokens.
+        try
         {
-            tokensInts[i] = int.Parse(tokens[i]);
+            _data = _serial.ReadLine(); // Reads the line, this does not need to be in an update, but right now I do not know how to make it an event.
+            string[] tokens = _data.Split(','); // Splits the data into tokens.
+            int[] tokensInts = new int[tokens.Length]; // Creates an array of ints with the length of the tokens. This can be done better and with less memory, because we know the data coming in.
+            for (int i = 0; i < tokens.Length; i++) // Fills the ints array with the strings from tokens.
+            {
+                tokensInts[i] = int.Parse(tokens[i]);
+            }
+            _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3])); // takes the inputs from Serial and maps it to a float between 0 and 1, then makes it into a Color type.
+            _cubeRenderer.material.color = _color; // Sets the color of the material to the new color.
+            Debug.Log(tokensInts[4]);
         }
-        Debug.Log(Map(tokensInts[1]));
-        _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3])); // takes the inputs from Serial and maps it to a float between 0 and 1, then makes it into a Color type.
-        _cubeRenderer.material.color = _color; // Sets the color of the material to the new color.
+        catch (TimeoutException ex)
+        {
+            Debug.Log(ex);
+        }
     }
 
     private void OnApplicationQuit()
