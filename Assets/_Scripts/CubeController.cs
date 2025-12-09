@@ -11,8 +11,9 @@ public class CubeController : MonoBehaviour
     private Renderer _cubeRenderer;
     private Color _color;
     private MeshFilter _meshFilter; // This is the filter that is used to change the mesh of the object.
-    [SerializeField] private Mesh[] _meshes; // The meshes that it change change into.
-
+    [SerializeField] private Mesh[] _meshes; // The meshes that it change into.
+    private int _index = 0; // This is used for the mesh switch.
+    
     void Start()
     {
         _serial.DtrEnable = true; // This needs to be here because else it will not work.
@@ -55,12 +56,13 @@ public class CubeController : MonoBehaviour
         _serial.Close();  // It is important to close the port again.
     }
 
-    private int index = 0;
+    /// <summary>
+    /// Changes the <c>Mesh</c> of the object with the array <c>Meshes</c>. It does this with a circular array structure.
+    /// </summary>
     private void ChangeMesh()
     {
-        index = (index + 1) % _meshes.Length;
-        _meshFilter.mesh = _meshes[index];
-        Debug.Log($"index: {index}");
+        _index = (_index + 1) % _meshes.Length;
+        _meshFilter.mesh = _meshes[_index];
     }
     
     /// <summary>
