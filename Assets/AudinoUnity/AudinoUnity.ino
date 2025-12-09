@@ -2,7 +2,6 @@
 Said value will also be used sent through Unity to alter a model, then used as an
 OUTPUT for the LEDs to represent the changes made to the digital model within Unity. */
 
-
 // Constants created for ports.
 
 // A# = analog ports for potentiometer.
@@ -33,17 +32,18 @@ int mapValue(int value);
 bool buttonPress(PinStatus status);
 
 void setup() {
-  // put your setup code here, to run once.
 
   // Is the value 9600 in like 90% of the time. Idk what it means.
   Serial.begin(9600);
 
+  // Setup the Inputs of the potentiometers and the button.
   setupInput(pot1Pin);
   setupInput(pot2Pin);
   setupInput(pot3Pin);
   setupInput(pot4Pin);
   setupInput(button);
 
+  // Setup the Outputs of the LEDs.
   setupOutput(led1Pin);
   setupOutput(led2Pin);
   setupOutput(led3Pin);
@@ -68,7 +68,7 @@ void loop() {
   Serial.print(',');
   Serial.print(potValues[3]);
   Serial.print(',');
-  Serial.println(buttonPress(digitalRead(button)));
+  Serial.println(buttonPress(digitalRead(button))); // Read the PinStatus of the button and write the button press to the Serial.
 
   // Here we delay the loop by the delayTime value specified.
   delay(delayTime);
@@ -79,8 +79,6 @@ void loop() {
   analogWrite(led3Pin, mapValue(potValues[2]));
   analogWrite(led4Pin, mapValue(potValues[3]));
 }
-
-
 
 // pinMode swaps the pins between INPUT and OUTPUT mode.
 void setupInput(pin_size_t pin)
@@ -100,6 +98,7 @@ int mapValue(int value)
   return map(value, 0, 1023, 0, 255);
 }
 
+// Checks the status of the button pin, and if it is LOW that means it returns true.
 bool buttonPress(PinStatus status)
 {
   if(status == LOW) return true;
