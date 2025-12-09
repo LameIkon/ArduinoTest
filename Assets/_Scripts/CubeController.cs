@@ -10,6 +10,8 @@ public class CubeController : MonoBehaviour
     private string _data; // The data from Serial
     private Renderer _cubeRenderer;
     private Color _color;
+    private MeshFilter _meshFilter; // This is the filter that is used to change the mesh of the object.
+    [SerializeField] private Mesh[] _meshes; // The meshes that it change change into.
 
     void Start()
     {
@@ -17,7 +19,7 @@ public class CubeController : MonoBehaviour
         _serial.Open(); // Opens the serial moniter on the Arduino.
         _serial.ReadTimeout = 100; // Do not know what this is.
         _cubeRenderer = GetComponent<Renderer>();
-       // _color = _cubeRenderer.material.color;
+        _meshFilter = GetComponent<MeshFilter>();
     }
 
 
@@ -35,8 +37,13 @@ public class CubeController : MonoBehaviour
             }
             _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]), Map(tokensInts[3])); // takes the inputs from Serial and maps it to a float between 0 and 1, then makes it into a Color type.
             _cubeRenderer.material.color = _color; // Sets the color of the material to the new color.
-            Debug.Log(tokensInts[4]);
+
+            if (tokensInts[4] == 0)
+            {
+                ChangeMesh();
+            }
         }
+        
         catch (TimeoutException ex)
         {
             Debug.Log(ex);
@@ -48,6 +55,14 @@ public class CubeController : MonoBehaviour
         _serial.Close();  // It is important to close the port again.
     }
 
+    private int index = 0;
+    private void ChangeMesh()
+    {
+        index = (index + 1) % _meshes.Length;
+        _meshFilter.mesh = _meshes[index];
+        Debug.Log($"index: {index}");
+    }
+    
     /// <summary>
     /// Maps an integer value to a float between <c>0</c> and <c>1</c>.
     /// </summary>
