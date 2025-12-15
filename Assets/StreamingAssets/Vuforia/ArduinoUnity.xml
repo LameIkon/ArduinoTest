@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
   <Tracking>
+    <ImageTarget name="Joker" size="1.000000 1.361702" />
     <ImageTarget name="cube" size="1.000000 1.000000" />
   </Tracking>
 </QCARConfig>

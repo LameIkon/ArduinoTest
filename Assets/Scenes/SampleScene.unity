@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71505e81f0dfc414289a939df670fdac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meshes: []
 --- !u!65 &387033766
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -488,13 +489,13 @@ MonoBehaviour:
   PreviewVisible: 1
   RuntimeOcclusion: 0
   RuntimeCollider: 0
-  mTrackableName: cube
+  mTrackableName: Joker
   mInitializedInEditor: 1
   mDataSetPath: Vuforia/ArduinoUnity.xml
-  mAspectRatio: 1
+  mAspectRatio: 1.361702
   mImageTargetType: 0
   mWidth: 1
-  mHeight: 1
+  mHeight: 1.361702
   mRuntimeTexture: {fileID: 0}
   mMotionHint: 1
   mTrackingOptimization: 0
@@ -530,7 +531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mObserverBehaviour: {fileID: 1043134631}
   mHiddenRoot: {fileID: 0}
-  mTargetName: cube
+  mTargetName: Joker
   mDatasetName: Vuforia/ArduinoUnity.xml
   mCastedBehaviour: {fileID: 1043134631}
   mMeshFilter: {fileID: 0}
