@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
-using System.IO.Ports; // This makes it possible to interface with the ports.
+using System.IO.Ports;  // This makes it possible to interface with the ports.
+using _Scripts.ScriptableObjects;
 
+[RequireComponent(typeof(Collider), typeof(MeshRenderer))]
 public class CubeController : MonoBehaviour
 {
     // IMPORTANT! Close the Serial Monitor window in the Arduino IDE else it will use the port.
@@ -11,7 +13,7 @@ public class CubeController : MonoBehaviour
     private Renderer _cubeRenderer;
     private Color _color;
     private MeshFilter _meshFilter; // This is the filter that is used to change the mesh of the object.
-    [SerializeField] private Mesh[] _meshes; // The meshes that it change into.
+    [SerializeField] private MeshData _meshData; // The meshes that it change into on a flyweight pattern.
     private int _index = 0; // This is used for the mesh switch.
     
     void Start()
@@ -27,26 +29,23 @@ public class CubeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        try
+        try // try catch because we are reading a line that can return an exception, this is so we can exit gracefully.
         {
             _data = _serial
                 .ReadLine(); // Reads the line, this does not need to be in an update, but right now I do not know how to make it an event.
             string[] tokens = _data.Split(','); // Splits the data into tokens.
-            int[]
-                tokensInts =
-                    new int[tokens
-                        .Length]; // Creates an array of ints with the length of the tokens. This can be done better and with less memory, because we know the data coming in.
+            int[] tokensInts = new int[tokens.Length]; // Creates an array of ints with the length of the tokens. This can be done better and with less memory, because we know the data coming in.
             for (int i = 0; i < tokens.Length; i++) // Fills the ints array with the strings from tokens.
             {
                 tokensInts[i] = int.Parse(tokens[i]);
             }
 
-            _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), Map(tokensInts[2]),
-                Map(tokensInts[
-                    3])); // takes the inputs from Serial and maps it to a float between 0 and 1, then makes it into a Color type.
+            // takes the inputs from Serial and maps it to a float between 0 and 1, then makes it into a Color type.
+            _color = new Color(Map(tokensInts[0]), Map(tokensInts[1]), 
+                                Map(tokensInts[2]), Map(tokensInts[3])); 
             _cubeRenderer.material.color = _color; // Sets the color of the material to the new color.
 
-            if (tokensInts[4] == 0)
+            if (tokensInts[4] == 0) // if the last token in the _data string is 0, means that the button has been pressed.
             {
                 ChangeMesh();
             }
@@ -75,8 +74,8 @@ public class CubeController : MonoBehaviour
     /// </summary>
     private void ChangeMesh()
     {
-        _index = (_index + 1) % _meshes.Length;
-        _meshFilter.mesh = _meshes[_index];
+        _index = (_index + 1) % _meshData.Meshes.Length;
+        _meshFilter.mesh = _meshData.Meshes[_index];
     }
     
     /// <summary>
